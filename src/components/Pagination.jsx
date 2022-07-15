@@ -81,7 +81,7 @@ function Pagination({
           <li
             key={key}
             className="paginationItem"
-            aria-current={pageNumber == currentPage ? "true" : "false"} // change this line to highlight a current page.
+            aria-current={pageNumber == currentPage ? "page" : "false"} // change this line to highlight a current page.
           >
             <button
               type="button"
@@ -141,8 +141,8 @@ Pagination.defaultProps = {
   currentPage: 1,
   pageSize: 1,
   pageSizeOptions: [15, 25, 50, 100],
-  onPageChange: () => {},
-  onPageSizeOptionChange: () => {},
+  onPageChange: () => { },
+  onPageSizeOptionChange: () => { },
 };
 
 export default Pagination;
