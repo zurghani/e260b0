@@ -1,5 +1,6 @@
 import "../css/pagination.scss";
 
+import { useState, useEffect } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
 import usePagination, { DOTS } from "../hooks/usePagination";
 
@@ -21,6 +22,9 @@ function Pagination({
     pageSize,
   });
 
+  const [disableNext, setDisableNext] = useState(false);
+  const [disablePrev, setDisablePrev] = useState(true);
+
   const onNext = () => {
     onPageChange(currentPage + 1);
   };
@@ -28,6 +32,21 @@ function Pagination({
   const onPrevious = () => {
     onPageChange(currentPage - 1);
   };
+
+  useEffect(() => {
+    if (currentPage == 1) {
+      setDisablePrev(true);
+    } else {
+      setDisablePrev(false);
+    }
+    const totalPages = Math.ceil(totalCount / pageSize);
+
+    if (currentPage == totalPages) {
+      setDisableNext(true);
+    } else {
+      setDisableNext(false);
+    }
+  }, [currentPage]);
 
   return (
     <ul
@@ -42,7 +61,7 @@ function Pagination({
           // Do not remove the aria-label below, it is used for Hatchways automation.
           aria-label="Goto previous page"
           onClick={onPrevious}
-          disabled={false} // change this line to disable a button.
+          disabled={disablePrev} // change this line to disable a button.
         >
           <ChevronLeftIcon />
         </button>
@@ -58,12 +77,11 @@ function Pagination({
             </li>
           );
         }
-
         return (
           <li
             key={key}
             className="paginationItem"
-            aria-current="false" // change this line to highlight a current page.
+            aria-current={pageNumber == currentPage ? "true" : "false"} // change this line to highlight a current page.
           >
             <button
               type="button"
@@ -84,7 +102,7 @@ function Pagination({
           // Do not remove the aria-label below, it is used for Hatchways automation.
           aria-label="Goto next page"
           onClick={onNext}
-          disabled={false} // change this line to disable a button.
+          disabled={disableNext} // change this line to disable a button.
         >
           <ChevronRightIcon />
         </button>
